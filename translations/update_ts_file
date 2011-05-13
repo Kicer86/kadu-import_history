@@ -1,0 +1,6 @@
+#!/bin/bash
+
+$QTDIR/bin/lupdate -noobsolete -verbose ../*.cpp ../*/*.cpp -ts import_history_it.ts
+$QTDIR/bin/lupdate -noobsolete -verbose ../*.cpp ../*/*.cpp -ts import_history_pl.ts
+$QTDIR/bin/lupdate -noobsolete -verbose ../*.cpp ../*/*.cpp -ts import_history_de.ts
+$QTDIR/bin/lupdate -noobsolete -verbose ../*.cpp ../*/*.cpp -ts import_history_fr.ts

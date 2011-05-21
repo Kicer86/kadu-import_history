@@ -48,7 +48,6 @@ ImportHistory::~ImportHistory()
 {
   kdebugf();
   Core::instance()->kaduWindow()->removeMenuActionDescription(importMenuActionDescription);
-  delete importMenuActionDescription;
   kdebugf2();
 }
 

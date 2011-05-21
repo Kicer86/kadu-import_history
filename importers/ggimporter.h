@@ -35,7 +35,7 @@ class ImportFromGG:public Importer
 {
     Q_OBJECT
 
-    QString decode(const QByteArray& msg, GaduProtocol::UinType uin);
+    QString decode(const QByteArray& msg, const Contact user);
     MemFile *arch;
     UinType owner_uin;
 
@@ -48,10 +48,11 @@ class ImportFromGG:public Importer
     struct message      gg_message;
     struct rcv_msg      gg_rcv_msg;
 
-public:
+    Chat chatFromUinsList(const UinsList &uinsList) const;
+    
+  public:
     ImportFromGG(const Account& acc, QString file, QObject *p);
     void run();
-    Chat chatFromUinsList(const UinsList &uinsList) const;
 };
 
 /** @} */

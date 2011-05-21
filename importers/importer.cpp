@@ -41,4 +41,3 @@ int Importer::getPosition() const
 {
   return position;
 }
-

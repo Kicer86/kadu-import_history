@@ -40,7 +40,8 @@ class Importer: public QThread
 
   public:
     Importer(const Account &acc, QObject* parent = 0);
-    void cancelImport();                 //zatrzymaj konwersję
+    virtual void run()=0;
+    void cancelImport();                  //zatrzymaj konwersję
     bool canceled() const;
     int getPosition() const;
 };

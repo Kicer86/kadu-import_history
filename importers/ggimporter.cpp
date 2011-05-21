@@ -1,19 +1,19 @@
 /*
   Wątek importujący archiwum Gadu-Gadu
   Copyright (C) 2010  Michał Walenciak
-  
+
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
   the Free Software Foundation, either version 3 of the License, or
   (at your option) any later version.
-  
+
   This program is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
-  
+
   You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include <QFile>
@@ -44,7 +44,7 @@
  */
 
 ImportFromGG::ImportFromGG(const Account &acc, QString file, QObject *p): Importer(acc, p)
-{  
+{
   //sprawdź czy plik istnieje
   QFile efile(file);
   if (!efile.exists())
@@ -60,12 +60,12 @@ ImportFromGG::ImportFromGG(const Account &acc, QString file, QObject *p): Import
   }
 
   if (QMessageBox::No==QMessageBox::warning(0, tr("Warning"), tr("This is beta version of Gadu-Gadu archive import pluggin!\n"
-    "Before you start, backup your kadu history (~/.kadu/history directory).\n\n"
-    "It's highly recommended to switch kadu to offline status.\n"
-    "Do not browse your history while import is in progress.\n"
-    "Ready to continue?"),
-    QMessageBox::Yes|QMessageBox::No,QMessageBox::No)
-  ) cancelImport();
+      "Before you start, backup your kadu history (~/.kadu/history directory).\n\n"
+      "It's highly recommended to switch kadu to offline status.\n"
+      "Do not browse your history while import is in progress.\n"
+      "Ready to continue?"),
+      QMessageBox::Yes|QMessageBox::No,QMessageBox::No)
+     ) cancelImport();
 
 
   //wstępnie przeanalizuj plik z historią
@@ -80,11 +80,11 @@ ImportFromGG::ImportFromGG(const Account &acc, QString file, QObject *p): Import
   unsigned int acc_uin=account.id().toInt();
   if (acc_uin!=owner_uin)
   {
-    if (QMessageBox::Yes==QMessageBox::warning(0, tr("Warning"), 
-                        tr("It seems that it is not your Gadu-Gadu archive.\n"
-                        "The uin saved in archives.dat file, and your current uin are different.\n"
-                        "Cancel import?"),
-                        QMessageBox::Yes|QMessageBox::No,QMessageBox::Yes)
+    if (QMessageBox::Yes==QMessageBox::warning(0, tr("Warning"),
+        tr("It seems that it is not your Gadu-Gadu archive.\n"
+           "The uin saved in archives.dat file, and your current uin are different.\n"
+           "Cancel import?"),
+        QMessageBox::Yes|QMessageBox::No,QMessageBox::Yes)
        )
       cancelImport();
   }
@@ -95,8 +95,9 @@ Chat ImportFromGG::chatFromUinsList(const UinsList& uinsList) const
 {
   ContactSet contacts;
   foreach(UinType uin, uinsList)
-  contacts.insert(ContactManager::instance()->byId(account, QString::number(uin), ActionCreateAndAdd));
-
+  {
+    contacts.insert(ContactManager::instance()->byId(account, QString::number(uin), ActionCreateAndAdd));
+  }
   return ChatManager::instance()->findChat(contacts);
 }
 
@@ -107,9 +108,9 @@ void ImportFromGG::run()
   //kodowanie historii
   QTextCodec::setCodecForCStrings(QTextCodec::codecForName("cp1250"));
 
-  if (cancel) 
+  if (cancel)
     return;
-  
+
   /* przesuń się na index */
   arch->seek(gg_header.index_off);
 
@@ -120,7 +121,8 @@ void ImportFromGG::run()
   for (int i=0;i<index_entries;i++)
   {
     arch->read(reinterpret_cast<char*>(&gg_index), sizeof(gg_index));
-    if (i!=1) continue;         //pierwsza sekcja (0) zawiera smieci, druga(1) wiadomosci, inne nas nie interesują
+    if (i!=1) 
+      continue;         //pierwsza sekcja (0) zawiera smieci, druga(1) wiadomosci, inne nas nie interesują
     /* zapamiętaj pozycje w pliku, bo zaraz bedziemy po nim jeździć */
     qint64 pos=arch->pos();
 
@@ -137,7 +139,7 @@ void ImportFromGG::run()
       /* odczytaj wszystkie nagłówki wiadomości znajdujące się za nagłówkiem */
       int msg_entries=gg_block.block_size/sizeof(struct msg_header);  //liczba wiadomości
       gg_msg_header=new struct msg_header[msg_entries];
-      
+
       arch->read(reinterpret_cast<char*>(gg_msg_header), sizeof(struct msg_header) *msg_entries);
       for (int j=0;j<msg_entries;j++)
       {
@@ -162,10 +164,11 @@ void ImportFromGG::run()
           UinsList uinsList;
           uinsList << uin;
           Chat chat=chatFromUinsList(uinsList);
-          
+
+          Contact user=ContactManager::instance()->byId(account, QString::number(uin), ActionCreateAndAdd);
           message.setMessageChat(chat);
-          message.setMessageSender(ContactManager::instance()->byId(account, QString::number(uin), ActionCreateAndAdd));
-          message.setContent(decode(msg, uin));
+          message.setMessageSender(user);
+          message.setContent(decode(msg, user));
           message.setSendDate(QDateTime::fromTime_t (gg_message.send_time));
           message.setReceiveDate(QDateTime::fromTime_t (gg_rcv_msg.rcv_time));
           message.setType(Message::TypeReceived);
@@ -194,21 +197,20 @@ void ImportFromGG::run()
           QByteArray msg=arch->read(len);
           UinsList uins;
           bool outgoing= owner_uin==gg_message.sender_uin;
-          if (!outgoing)                        //konferencja, przychodząca
+          if (outgoing==false)                  //konferencja lub wiadomość przychodząca
             uins << gg_message.sender_uin;      //dopisz tego co przysyła też do listy odbiorców
 
-          for (int k=0; k<gg_message.recivers;k++)
+          for (int k=0; k<gg_message.recivers; k++)
             if (us[k]!=owner_uin)
               uins << us[k];    //stare gg (chyba <6.0) traktuje zwykle rozmowy jak konferencje dodając osobe wysylającą (własciciela) do listy odbiorców, wyrzuć go
 
-          Chat chat(chatFromUinsList(uins));
+          Contact user=outgoing? account.accountContact()
+                                 :ContactManager::instance()->byId(account, QString::number(gg_message.sender_uin), ActionCreateAndAdd);
+          message.setMessageChat(chatFromUinsList(uins));
+          message.setMessageSender(user);
+          message.setContent(decode(msg, user));
+//           message.setContent(decode(msg, uins[0]));   //1. uin ? nie pamięta skąd to sie wzięło, widocznie tak jest ;)
 
-          message.setMessageChat(chat);
-          message.setMessageSender(outgoing? 
-                                     account.accountContact()
-                                   : ContactManager::instance()->byId(account, QString::number(gg_message.sender_uin), ActionCreateAndAdd));
-          message.setContent(decode(msg, uins[0]));   //1. uin ? nie pamięta skąd to sie wzięło, widocznie tak jest ;)
-                            
           message.setSendDate(QDateTime::fromTime_t (gg_message.send_time));
           message.setReceiveDate(QDateTime::fromTime_t (gg_rcv_msg.rcv_time));
           message.setType(outgoing ? Message::TypeSent : Message::TypeReceived);
@@ -235,7 +237,7 @@ void ImportFromGG::run()
 /* rozszyfruj wiadomość i zwróć ją w sformatowanej postaci*/
 /* po tekscie może pojawić się rich text */
 /* http://toxygen.net/libgadu/protocol/#ch1.6 */
-QString ImportFromGG::decode(const QByteArray &msg, GaduProtocol::UinType uin)      //uin potrzebny w razie pojawienia sie obrazka
+QString ImportFromGG::decode(const QByteArray& msg, const Contact user)      //uin potrzebny w razie pojawienia sie obrazka
 {
   QString decoded_msg;
   QByteArray format;
@@ -265,7 +267,7 @@ QString ImportFromGG::decode(const QByteArray &msg, GaduProtocol::UinType uin)  
     key=c;
     j++;
   }
-    
+
   //sprawdź formatowanie w poszukiwaniu obrazków
   QByteArray nformat;
   position=0;
@@ -276,7 +278,7 @@ QString ImportFromGG::decode(const QByteArray &msg, GaduProtocol::UinType uin)  
   {
     struct gg_msg_richtext_format frm;
     struct gg_msg_richtext_image img;
-    
+
     memcpy(&frm, array + position,sizeof(frm));
     for (unsigned int i=0;i<sizeof(frm);i++)
       nformat.append(format[position++]);
@@ -307,16 +309,15 @@ QString ImportFromGG::decode(const QByteArray &msg, GaduProtocol::UinType uin)  
       position++;    //null
       position+=8;   //8 bajtów na crc i rozmiar (juz jest w nagłówku (img) )
 
-      QFile img_file(profilePath(QString("images/%1-%2-%3-%4").arg(uin).arg(img.size).arg(img.crc32).arg(file_name.data())));
+      QFile img_file(profilePath(QString("images/%1-%2-%3-%4").arg(user.id().toInt()).arg(img.size).arg(img.crc32).arg(file_name.data())));
       img_file.open(QIODevice::WriteOnly);
       img_file.write(reinterpret_cast<char*>(array+position),img.size);
       img_file.close();
       position+=img.size;
     }
   }
-  
-  Contact contact=ContactManager::instance()->byId(account, QString().number(uin), ActionCreateAndAdd);
-  FormattedMessage fmt_msg=GaduFormatter::createMessage(account, contact, decoded_msg, (unsigned char*) nformat.data(), nformat.size(), true);
+
+  FormattedMessage fmt_msg=GaduFormatter::createMessage(account, user, decoded_msg, (unsigned char*) nformat.data(), nformat.size(), true);
   return fmt_msg.toHtml();
 }
 

@@ -21,8 +21,8 @@
 
 #include <QString>
 
-#include "importer.h"
-#include "../gg.h"
+#include "../importer.h"
+#include "gg.h"
 #include "plugins/gadu_protocol/gadu-protocol.h"
 
 class MemFile;

@@ -22,13 +22,10 @@
 #include <QWidget>
 
 #include "accounts/account.h"
+#include "ui_import_history.h"
+
 
 class QTimer;
-class QComboBox;
-class QLabel;
-class QPushButton;
-class QLineEdit;
-class QProgressBar;
 class QCloseEvent;
 
 class ImportFromGG;
@@ -42,25 +39,16 @@ class Importer;
 class Import: public QWidget
 {
     Q_OBJECT
-
-    void closeEvent(QCloseEvent *event);
-
-    /* gg */
-    QLabel         *ggPathLabel;
-    QLineEdit      *ggPath;
-    QPushButton    *ggBrowseButton, *ggProceedButton;
-
-    /* wspólne */
-    QPushButton    *cancelButton;
-    QProgressBar   *progressBar;
-    QComboBox      *accountCBox;
-    QLabel         *accountLabel;
-
+    
+    Ui_ImportHistory *ui;
+    
     Importer       *imThread;
     bool           thread;
 
     QTimer *timer;
     QList<Account> accountList;
+    
+    void closeEvent(QCloseEvent *event);
 
   private slots:
     void ggProceed();

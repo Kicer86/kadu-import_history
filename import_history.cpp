@@ -22,7 +22,7 @@
 #include "misc/misc.h"
 
 #include "import_history.h"
-#include "gui/import.h"
+#include "gui/gui.h"
 
 
 /** @ingroup import_history

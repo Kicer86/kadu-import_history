@@ -35,9 +35,8 @@
 #include "plugins/history/history.h"
 
 #include "ggimporter.h"
-#include "../crc32.h"
-#include "../classes/memfile.h"
-
+#include "crc32.h"
+#include "misc/memfile.h"
 
 /** @ingroup ggimporter
  * @{
@@ -51,12 +50,14 @@ ImportFromGG::ImportFromGG(const Account &acc, QString file, QObject *p): Import
   {
     QMessageBox::critical(0, tr("Error"), tr("File does no exist."));
     cancelImport();
+    return;
   }
 
   if (account.isNull() || !History::instance()->currentStorage())
   {
     QMessageBox::critical(0, tr("Error"), tr("Could not find any Gadu-Gadu account."));
     cancelImport();
+    return;
   }
 
   if (QMessageBox::No==QMessageBox::warning(0, tr("Warning"), tr("This is beta version of Gadu-Gadu archive import pluggin!\n"
@@ -65,7 +66,11 @@ ImportFromGG::ImportFromGG(const Account &acc, QString file, QObject *p): Import
       "Do not browse your history while import is in progress.\n"
       "Ready to continue?"),
       QMessageBox::Yes|QMessageBox::No,QMessageBox::No)
-     ) cancelImport();
+     ) 
+  {
+    cancelImport();
+    return;
+  }
 
 
   //wstępnie przeanalizuj plik z historią

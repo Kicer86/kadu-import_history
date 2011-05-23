@@ -8,23 +8,22 @@ set (CMAKE_MIN_VERSION "2.8.0")
 set (KADU_FIND_REQUIRED true)
 include (FindKadu)
 
-include_directories (${KADU_INCLUDE_DIR}/kadu-core)
+include_directories (${KADU_INCLUDE_DIR}/kadu-core ${CMAKE_CURRENT_BINARY_DIR})
 
 set (SOURCES
   import_history.cpp
-  crc32.cpp
-  gui/import.cpp
+  gui/gui.cpp
   importers/importer.cpp
-  importers/ggimporter.cpp
-  classes/memfile.cpp
+  importers/gg6/ggimporter.cpp
+  importers/gg6/crc32.cpp
+  misc/memfile.cpp
 )
 
 set (MOC_SOURCES
   import_history.h
-  gui/import.h
+  gui/gui.h
   importers/importer.h
-  importers/ggimporter.h
-  classes/memfile.h
+  importers/gg6/ggimporter.h
 )
 
 set (TRANSLATION_SOURCES
@@ -37,8 +36,10 @@ set (TRANSLATION_SOURCES
 set (CONFIGURATION_FILES
 )
 
+qt4_wrap_ui(import_history_UIS gui/import_history.ui)
+
 kadu_PLUGIN(import_history
-  PLUGIN_SOURCES ${SOURCES}
+  PLUGIN_SOURCES ${SOURCES} ${import_history_UIS}
   PLUGIN_MOC_SOURCES ${MOC_SOURCES}
   PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
   PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}

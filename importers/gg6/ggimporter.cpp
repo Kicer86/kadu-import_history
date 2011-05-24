@@ -25,7 +25,6 @@
 #include <libgadu.h>
 
 #include "accounts/account-manager.h"
-#include "chat/chat-manager.h"
 #include "chat/message/message.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-set.h"
@@ -60,19 +59,6 @@ ImportFromGG::ImportFromGG(const Account &acc, QString file, QObject *p): Import
     return;
   }
 
-  if (QMessageBox::No==QMessageBox::warning(0, tr("Warning"), tr("This is beta version of Gadu-Gadu archive import pluggin!\n"
-      "Before you start, backup your kadu history (~/.kadu/history directory).\n\n"
-      "It's highly recommended to switch kadu to offline status.\n"
-      "Do not browse your history while import is in progress.\n"
-      "Ready to continue?"),
-      QMessageBox::Yes|QMessageBox::No,QMessageBox::No)
-     ) 
-  {
-    cancelImport();
-    return;
-  }
-
-
   //wstępnie przeanalizuj plik z historią
   arch=new MemFile(file);                         //plik z archiwum - do odczytu danych
   arch->open(QIODevice::ReadOnly);
@@ -93,17 +79,6 @@ ImportFromGG::ImportFromGG(const Account &acc, QString file, QObject *p): Import
        )
       cancelImport();
   }
-}
-
-
-Chat ImportFromGG::chatFromUinsList(const UinsList& uinsList) const
-{
-  ContactSet contacts;
-  foreach(UinType uin, uinsList)
-  {
-    contacts.insert(ContactManager::instance()->byId(account, QString::number(uin), ActionCreateAndAdd));
-  }
-  return ChatManager::instance()->findChat(contacts);
 }
 
 

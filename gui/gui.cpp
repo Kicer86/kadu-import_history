@@ -33,11 +33,11 @@
 #include "accounts/account-manager.h"
 #include "debug.h"
 #include "misc/misc.h"
-// #include "modules.h"
 #include "icons/icons-manager.h"
 
 #include "gui.h"
 #include "importers/gg6/ggimporter.h"
+#include "importers/gg8/gg8importer.h"
 
 /** @ingroup Import
  * @{
@@ -116,6 +116,7 @@ void Import::ggProceed()
       break;
       
     case 1:
+      imThread=new ImportFromGG8(accountList[ui->accountCBox->currentIndex()], ui->gg8Path->text(), this);
       break;
 
     default:

@@ -15,6 +15,7 @@ set (SOURCES
   gui/gui.cpp
   importers/importer.cpp
   importers/gg6/ggimporter.cpp
+  importers/gg8/gg8importer.cpp
   importers/gg6/crc32.cpp
   misc/memfile.cpp
 )
@@ -24,6 +25,7 @@ set (MOC_SOURCES
   gui/gui.h
   importers/importer.h
   importers/gg6/ggimporter.h
+  importers/gg8/gg8importer.h
 )
 
 set (TRANSLATION_SOURCES

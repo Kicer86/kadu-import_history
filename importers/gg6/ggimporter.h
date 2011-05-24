@@ -47,8 +47,6 @@ class ImportFromGG:public Importer
     struct msg_header  *gg_msg_header;
     struct message      gg_message;
     struct rcv_msg      gg_rcv_msg;
-
-    Chat chatFromUinsList(const UinsList &uinsList) const;
     
   public:
     ImportFromGG(const Account& acc, QString file, QObject *p);

@@ -23,6 +23,7 @@
 #include <QMutex>
 #include <QWaitCondition>
 
+#include "plugins/history_migration/history-migration-helper.h"
 #include "protocols/protocol.h"
 
 //zbiór funkcji ogólnego przeznaczenia, dziedziczony przez kolejne importery (gg, kadu itp)
@@ -34,6 +35,8 @@ class Importer: public QThread
     bool cancel;                          //jeśli true to wątek powinien przerwać konwersję i wyjść
     int position;                         //pozycja w obszarze przeszukiwań
     const Account account;
+    
+    Chat chatFromUinsList(const UinsList &uinsList) const;
 
   signals:
     void boundaries(int,int);             //wysyła informacje o obszarze pliku do przeszukania

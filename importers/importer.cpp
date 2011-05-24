@@ -17,12 +17,29 @@
  */
 
 
+#include <QMessageBox>
+
+#include "chat/chat-manager.h"
+#include "contacts/contact-manager.h"
+#include "contacts/contact-set.h"
 #include "importer.h"
 
 
 Importer::Importer(const Account &acc, QObject* parent): 
     QThread(parent), cancel(false), account(acc)
-{}
+{
+  if (QMessageBox::No==QMessageBox::warning(0, tr("Warning"), tr("This is beta version of Gadu-Gadu archive import pluggin!\n"
+      "Before you start, backup your kadu history (~/.kadu/history directory).\n\n"
+      "It's highly recommended to switch kadu to offline status.\n"
+      "Do not browse your history while import is in progress.\n"
+      "Ready to continue?"),
+      QMessageBox::Yes|QMessageBox::No,QMessageBox::No)
+     ) 
+  {
+    cancelImport();
+    return;
+  }
+}
 
 
 void Importer::cancelImport()
@@ -40,4 +57,15 @@ bool Importer::canceled() const
 int Importer::getPosition() const
 {
   return position;
+}
+
+
+Chat Importer::chatFromUinsList(const UinsList& uinsList) const
+{
+  ContactSet contacts;
+  foreach(UinType uin, uinsList)
+  {
+    contacts.insert(ContactManager::instance()->byId(account, QString::number(uin), ActionCreateAndAdd));
+  }
+  return ChatManager::instance()->findChat(contacts);
 }

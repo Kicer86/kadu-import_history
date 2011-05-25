@@ -95,6 +95,60 @@ Cancel import?</source>
         <source>Import history</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Old GG</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Gadu Gadu 6.0 and olders:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Path to gadu-gadu archives file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Exact path to archives.dat file.
+File can be found in Gadu-Gadu&apos;s profile directory.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Browse</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New GG</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Gadu Gadu version 8, 9 and 10:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Path to gadu-gadu profile dir:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Path to Gadu-Gadu user&apos;s profile directory.
+Given directory should contain Archive.db file and ImgCache subdirectory.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Target account:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Importer</name>

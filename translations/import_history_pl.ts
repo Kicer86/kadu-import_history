@@ -98,6 +98,62 @@ Anulować import?</translation>
         <source>Import history</source>
         <translation>Importuj historię</translation>
     </message>
+    <message>
+        <source>Form</source>
+        <translation>Form</translation>
+    </message>
+    <message>
+        <source>Old GG</source>
+        <translation>Stare GG</translation>
+    </message>
+    <message>
+        <source>Gadu Gadu 6.0 and olders:</source>
+        <translation>Gadu-Gadu 6.0 i starsze:</translation>
+    </message>
+    <message>
+        <source>Path to gadu-gadu archives file</source>
+        <translation>Ścieżka do pliku archiwum gadu-gadu</translation>
+    </message>
+    <message>
+        <source>Exact path to archives.dat file.
+File can be found in Gadu-Gadu&apos;s profile directory.</source>
+        <translation>Ścieżka do pliku archives.dat
+Plik ten znajduje się w katalogu z profilem Gadu-Gadu.</translation>
+    </message>
+    <message>
+        <source>Browse</source>
+        <translation>Przeglądaj</translation>
+    </message>
+    <message>
+        <source>New GG</source>
+        <translation>Nowe GG</translation>
+    </message>
+    <message>
+        <source>Gadu Gadu version 8, 9 and 10:</source>
+        <translation>Gadu Gadu w wersji 8, 9 i 10:</translation>
+    </message>
+    <message>
+        <source>Path to gadu-gadu profile dir:</source>
+        <translation>Ścieżka do profilu użytkownika:</translation>
+    </message>
+    <message>
+        <source>Path to Gadu-Gadu user&apos;s profile directory.
+Given directory should contain Archive.db file and ImgCache subdirectory.</source>
+        <translation>Ścieżka do katalogu z profilem użytkownika.
+Katalog ten powinien zawierać plik Archive.db oraz podkatalog ImgCache.</translation>
+    </message>
+    <message>
+        <source>Target account:</source>
+        <translation>Docelowe konto:</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <translation>Importuj</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Anuluj</translation>
+    </message>
 </context>
 <context>
     <name>Importer</name>

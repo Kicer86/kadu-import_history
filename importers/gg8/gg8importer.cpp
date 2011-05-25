@@ -20,6 +20,7 @@
 #include <sqlite3.h>
 #include <QDir>
 #include <QMessageBox>
+#include <QTextCodec>
 
 #include "chat/message/message.h"
 #include "contacts/contact-manager.h"
@@ -51,6 +52,7 @@ void ImportFromGG8::run()
   QByteArray archiveFile=dir.toUtf8()+"/Archive.db";
   int rc;
 
+  //otwórz bazę
   rc=sqlite3_open_v2( archiveFile.data(), &db, SQLITE_OPEN_READONLY, 0);
   if (rc)
   {
@@ -58,7 +60,21 @@ void ImportFromGG8::run()
     return;
   }
 
-  //odczytaj liczbę chatów
+  //odczytaj liczbę wpisów
+  sqlite3_stmt *stmt_entries;
+  char entries_sql[]="SELECT * FROM sqlite_sequence";
+  rc=sqlite3_prepare_v2(db, entries_sql, -1, &stmt_entries, 0);
+  if (rc != SQLITE_OK)
+  {
+    QMessageBox::critical(0, tr("Error"), tr("Error while executing %1.").arg(entries_sql));
+    return;
+  }
+  sqlite3_step(stmt_entries);
+  int entries=sqlite3_column_int(stmt_entries, 0);
+  sqlite3_finalize(stmt_entries);
+  emit boundaries(1, entries);               //ustaw progress bar (liczba wpisów)
+  
+  //odczytaj zbiór czatów
   sqlite3_stmt *stmt_chats;
   const char chats_sql[]="SELECT chat_id, interlocutor_id FROM 'chats';";
   rc=sqlite3_prepare_v2(db, chats_sql, -1, &stmt_chats, 0);
@@ -68,12 +84,13 @@ void ImportFromGG8::run()
     return;
   }
 
+  //pobierz dany czat
   while (sqlite3_step(stmt_chats)!=SQLITE_DONE)
   {
     int chat_id=sqlite3_column_int(stmt_chats, 0);
     int interlocutor_id=sqlite3_column_int(stmt_chats, 1);
 
-    //odczytaj uin rozmówcy
+    //odczytaj uiny rozmówców
     sqlite3_stmt *stmt_uin;
     char uin_sql[128];
     sprintf(uin_sql, "SELECT identification FROM interlocutors WHERE interlocutor_id='%d';", interlocutor_id);
@@ -91,9 +108,9 @@ void ImportFromGG8::run()
     UinsList uinsList;
     QStringList uins=uinsRaw.split("-");
     foreach(QString uin, uins)
-      uinsList << uin.toInt();
+    uinsList << uin.toInt();
 
-    //pobierz chat
+    //pobierz czat
     sqlite3_stmt *stmt_conversation;
     char conversation_sql[128];
     sprintf(conversation_sql, "SELECT * FROM communication_items WHERE chat_id='%d';",chat_id);
@@ -105,27 +122,30 @@ void ImportFromGG8::run()
       return;
     }
 
+    //przetwarzaj wpisy danego czatu
     while (sqlite3_step(stmt_conversation)!=SQLITE_DONE)
     {
       //odczytaj różne dane
       bool sent=sqlite3_column_int(stmt_conversation, 2)==1;
       QDateTime date=QDateTime::fromString(reinterpret_cast<const char*>(sqlite3_column_text(stmt_conversation, 3)), "yyyy-MM-ddTHH:mm:ss");
-      QString msg=reinterpret_cast<const char*>(sqlite3_column_text(stmt_conversation, 5));
+      QByteArray msg=reinterpret_cast<const char*>(sqlite3_column_text(stmt_conversation, 5));
 
       //dopisz wiadomość do historii
-      Message message;
-      //gg8 nie przechowuje w historii informacji nt tego który z rozmówców z konferencji wysłał wiadomość (dziwne). 
+      QTextCodec *codec = QTextCodec::codecForName("utf8");   //???? TODO: bez tego nie działa
+      Message message=Message::create();
+      //gg8 nie przechowuje w historii informacji nt tego który z rozmówców z konferencji wysłał wiadomość (dziwne).
       //Użyjemy zatem pierwszego z listy.
       Contact user=sent? account.accountContact()
-                   :ContactManager::instance()->byId(account, QString(uinsList[0]), ActionCreateAndAdd);  
+                   :ContactManager::instance()->byId(account, QString(uinsList[0]), ActionCreateAndAdd);
       message.setMessageChat(chatFromUinsList(uinsList));
       message.setMessageSender(user);
-      message.setContent(msg);
+      message.setContent(codec->toUnicode(msg));
       message.setSendDate(date);
       message.setReceiveDate(date);
-      message.setType(sent ? Message::TypeSent : Message::TypeReceived);
+      message.setType(sent? Message::TypeSent : Message::TypeReceived);
 
       History::instance()->currentStorage()->appendMessage(message);
+      position++;                                               //dodano kolejny wpis -> postęp progress baru
     }
     sqlite3_finalize(stmt_conversation);
   }

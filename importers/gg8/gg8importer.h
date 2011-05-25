@@ -26,6 +26,8 @@
 class ImportFromGG8 : public Importer
 {
     QString dir;
+    QString decode(QString);   //dekodowanie wczytanej wiadomości (wyłuskiwanie obrazków)
+    bool noImages;
     
   public:  
     ImportFromGG8(const Account& acc, QString d, QObject* p);

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>639</width>
+    <width>637</width>
     <height>203</height>
    </rect>
   </property>
@@ -21,13 +21,13 @@
      </property>
      <widget class="QWidget" name="oldGG">
       <attribute name="title">
-       <string>stare GG</string>
+       <string>Old GG</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
         <widget class="QLabel" name="label_2">
          <property name="text">
-          <string>Gadu Gadu 6.0 i starsze:</string>
+          <string>Gadu Gadu 6.0 and olders:</string>
          </property>
         </widget>
        </item>
@@ -36,17 +36,26 @@
          <item>
           <widget class="QLabel" name="label">
            <property name="text">
-            <string>Ścieżka do archiwum gg:</string>
+            <string>Path to gadu-gadu archives file</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="ggPath"/>
+          <widget class="QLineEdit" name="ggPath">
+           <property name="toolTip">
+            <string>Exact path to archives.dat file.
+File can be found in Gadu-Gadu's profile directory.</string>
+           </property>
+           <property name="whatsThis">
+            <string>Exact path to archives.dat file.
+File can be found in Gadu-Gadu's profile directory.</string>
+           </property>
+          </widget>
          </item>
          <item>
           <widget class="QPushButton" name="ggBrowseButton">
            <property name="text">
-            <string>Przeglądaj</string>
+            <string>Browse</string>
            </property>
           </widget>
          </item>
@@ -69,13 +78,13 @@
      </widget>
      <widget class="QWidget" name="newGG">
       <attribute name="title">
-       <string>Nowe GG</string>
+       <string>New GG</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
         <widget class="QLabel" name="label_3">
          <property name="text">
-          <string>Gadu Gadu nowsze niż 6.0:</string>
+          <string>Gadu Gadu version 8, 9 and 10:</string>
          </property>
         </widget>
        </item>
@@ -84,17 +93,26 @@
          <item>
           <widget class="QLabel" name="label_4">
            <property name="text">
-            <string>Ścieżka do archiwum gg:</string>
+            <string>Path to gadu-gadu profile dir:</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="gg8Path"/>
+          <widget class="QLineEdit" name="gg8Path">
+           <property name="toolTip">
+            <string>Path to Gadu-Gadu user's profile directory.
+Given directory should contain Archive.db file and ImgCache subdirectory.</string>
+           </property>
+           <property name="whatsThis">
+            <string>Path to Gadu-Gadu user's profile directory.
+Given directory should contain Archive.db file and ImgCache subdirectory.</string>
+           </property>
+          </widget>
          </item>
          <item>
           <widget class="QPushButton" name="gg8BrowseButton">
            <property name="text">
-            <string>Przeglądaj</string>
+            <string>Browse</string>
            </property>
           </widget>
          </item>
@@ -129,21 +147,21 @@
      <item row="1" column="0" colspan="2">
       <widget class="QLabel" name="label_5">
        <property name="text">
-        <string>Docelowe konto:</string>
+        <string>Target account:</string>
        </property>
       </widget>
      </item>
      <item row="2" column="0">
       <widget class="QPushButton" name="proceedButton">
        <property name="text">
-        <string>Importuj</string>
+        <string>Import</string>
        </property>
       </widget>
      </item>
      <item row="2" column="4">
       <widget class="QPushButton" name="cancelButton">
        <property name="text">
-        <string>Anuluj</string>
+        <string>Cancel</string>
        </property>
       </widget>
      </item>

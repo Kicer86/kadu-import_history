@@ -107,10 +107,6 @@ Anulować import?</translation>
         <translation>Stare GG</translation>
     </message>
     <message>
-        <source>Gadu Gadu 6.0 and olders:</source>
-        <translation>Gadu-Gadu 6.0 i starsze:</translation>
-    </message>
-    <message>
         <source>Path to gadu-gadu archives file</source>
         <translation>Ścieżka do pliku archiwum gadu-gadu</translation>
     </message>
@@ -153,6 +149,10 @@ Katalog ten powinien zawierać plik Archive.db oraz podkatalog ImgCache.</transl
     <message>
         <source>Cancel</source>
         <translation>Anuluj</translation>
+    </message>
+    <message>
+        <source>Gadu Gadu 7.0 and olders:</source>
+        <translation>Gadu-Gadu 7.0 i starsze:</translation>
     </message>
 </context>
 <context>

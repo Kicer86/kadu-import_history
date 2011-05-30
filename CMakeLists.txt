@@ -14,9 +14,9 @@ set (SOURCES
   import_history.cpp
   gui/gui.cpp
   importers/importer.cpp
-  importers/gg6/ggimporter.cpp
+  importers/gg7/crc32.cpp
+  importers/gg7/ggimporter.cpp
   importers/gg8/gg8importer.cpp
-  importers/gg6/crc32.cpp
   misc/memfile.cpp
 )
 
@@ -24,7 +24,7 @@ set (MOC_SOURCES
   import_history.h
   gui/gui.h
   importers/importer.h
-  importers/gg6/ggimporter.h
+  importers/gg7/ggimporter.h
   importers/gg8/gg8importer.h
 )
 

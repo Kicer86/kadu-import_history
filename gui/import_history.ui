@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>637</width>
-    <height>203</height>
+    <width>635</width>
+    <height>201</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,7 +27,7 @@
        <item>
         <widget class="QLabel" name="label_2">
          <property name="text">
-          <string>Gadu Gadu 6.0 and olders:</string>
+          <string>Gadu Gadu 7.0 and olders:</string>
          </property>
         </widget>
        </item>

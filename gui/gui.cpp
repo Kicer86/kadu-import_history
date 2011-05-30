@@ -36,7 +36,7 @@
 #include "icons/icons-manager.h"
 
 #include "gui.h"
-#include "importers/gg6/ggimporter.h"
+#include "importers/gg7/ggimporter.h"
 #include "importers/gg8/gg8importer.h"
 
 /** @ingroup Import

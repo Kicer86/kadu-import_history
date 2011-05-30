@@ -104,10 +104,6 @@ Cancel import?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Gadu Gadu 6.0 and olders:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Path to gadu-gadu archives file</source>
         <translation type="unfinished"></translation>
     </message>
@@ -147,6 +143,10 @@ Given directory should contain Archive.db file and ImgCache subdirectory.</sourc
     </message>
     <message>
         <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Gadu Gadu 7.0 and olders:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

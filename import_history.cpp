@@ -33,6 +33,16 @@
 
 ImportHistory::ImportHistory(): QObject()
 {
+}
+
+
+ImportHistory::~ImportHistory()
+{
+}
+
+
+int ImportHistory::init(bool)
+{
   kdebugf();
   //dopisz się do menu kadu
   importMenuActionDescription = new ActionDescription(
@@ -41,25 +51,17 @@ ImportHistory::ImportHistory(): QObject()
   );
   Core::instance()->kaduWindow()->insertMenuActionDescription(importMenuActionDescription, KaduWindow::MenuTools, 5);
   kdebugf2();
-}
-
-
-ImportHistory::~ImportHistory()
-{
-  kdebugf();
-  Core::instance()->kaduWindow()->removeMenuActionDescription(importMenuActionDescription);
-  kdebugf2();
-}
-
-
-int ImportHistory::init(bool)
-{
   return 0;
 }
 
 
 void ImportHistory::done()
-{}
+{
+  kdebugf();
+  Import::destroyInstance();
+  Core::instance()->kaduWindow()->removeMenuActionDescription(importMenuActionDescription);
+  kdebugf2();
+}
 
 
 void ImportHistory::importHistory(QAction *, bool)

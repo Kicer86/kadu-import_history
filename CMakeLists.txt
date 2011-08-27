@@ -8,7 +8,7 @@ set (CMAKE_MIN_VERSION "2.8.0")
 set (KADU_FIND_REQUIRED true)
 include (FindKadu)
 
-include_directories (${KADU_INCLUDE_DIR}/kadu-core ${CMAKE_CURRENT_BINARY_DIR})
+include (FindPkgConfig)
 
 set (SOURCES
   import_history.cpp
@@ -38,16 +38,42 @@ set (TRANSLATION_SOURCES
 set (CONFIGURATION_FILES
 )
 
+if (WIN32)
+  # we need to bundle sqlite on Windows
+  list (APPEND SOURCES
+    sqlite3.c
+  )
+
+  set_source_files_properties (sqlite3.c PROPERTIES
+    COMPILE_FLAGS "-fno-strict-aliasing -Wno-error"
+  )
+endif (WIN32)
+
+if (WIN32)
+	if (NOT MINGW_LIBGADU_DIR)
+		message (SEND_ERROR " Pass path to libgadu -DMINGW_LIBGADU_DIR=path")
+		set (MINGW_LIBGADU_DIR "")
+	else (NOT MINGW_LIBGADU_DIR)
+		set (LIBGADU_FOUND true)
+		set (LIBGADU_INCLUDE_DIRS ${MINGW_LIBGADU_DIR})
+		set (LIBGADU_LIBRARY_DIRS ${MINGW_LIBGADU_DIR})
+		set (LIBGADU_LIBRARIES gadu ws2_32)
+	endif (NOT MINGW_LIBGADU_DIR)
+else (WIN32)
+	pkg_search_module (LIBGADU REQUIRED libgadu)
+endif (WIN32)
+
+include_directories (${LIBGADU_INCLUDE_DIRS})
+link_directories (${LIBGADU_LIBRARY_DIRS})
+
 qt4_wrap_ui(import_history_UIS gui/import_history.ui)
+include_directories (${CMAKE_CURRENT_BINARY_DIR})
 
 kadu_PLUGIN(import_history
   PLUGIN_SOURCES ${SOURCES} ${import_history_UIS}
   PLUGIN_MOC_SOURCES ${MOC_SOURCES}
   PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
   PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
-  PLUGIN_DEPENDENCIES history
+  PLUGIN_LIBRARIES ${LIBGADU_LIBRARIES}
+  PLUGIN_DEPENDENCIES history gadu_protocol
 )
-
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../gadu_protocol/)
-
-target_link_libraries (import_history)

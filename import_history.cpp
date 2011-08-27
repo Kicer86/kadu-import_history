@@ -64,7 +64,7 @@ void ImportHistory::done()
 
 void ImportHistory::importHistory(QAction *, bool)
 {
-  (new Import())->show();
+  Import::show();
 }
 
 Q_EXPORT_PLUGIN2(import_history, ImportHistory)

@@ -31,6 +31,7 @@
 #include <QTimer>
 
 #include "accounts/account-manager.h"
+#include "activate.h"
 #include "debug.h"
 #include "misc/misc.h"
 #include "icons/icons-manager.h"
@@ -43,6 +44,21 @@
  * @{
  */
 
+Import *Import::Instance = 0;
+
+void Import::show()
+{
+  if (!Instance)
+    Instance = new Import();
+
+  _activateWindow(Instance);
+}
+
+void Import::destroyInstance()
+{
+  delete Instance;
+  Instance = 0;
+}
 
 Import::Import(QDialog *p):
     QWidget(p, Qt::Dialog), ui(new Ui_ImportHistory), thread(false)
@@ -72,6 +88,7 @@ Import::Import(QDialog *p):
 Import::~Import()
 {
   delete ui;
+  Instance = 0;
 }
 
 

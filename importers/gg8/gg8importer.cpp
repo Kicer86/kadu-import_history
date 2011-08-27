@@ -189,7 +189,7 @@ void ImportFromGG8::run()
         message.setContent(decode(codec->toUnicode(msg)));
         message.setSendDate(date);
         message.setReceiveDate(date);
-        message.setType(sent? Message::TypeSent : Message::TypeReceived);
+        message.setType(sent? MessageTypeSent : MessageTypeReceived);
 
         History::instance()->currentStorage()->appendMessage(message);
       }

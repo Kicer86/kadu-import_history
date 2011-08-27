@@ -32,6 +32,7 @@
 
 #include "accounts/account-manager.h"
 #include "activate.h"
+#include "configuration/configuration-manager.h"
 #include "debug.h"
 #include "misc/misc.h"
 #include "icons/icons-manager.h"
@@ -162,7 +163,10 @@ void Import::threadFinished()
   thread=false;                                     //wątek nieaktywny
   ui->progressBar->reset();
   if (!imThread->canceled())
+  {
     QMessageBox::information(this,tr("Information"), tr("History imported sucsesfully."));
+    ConfigurationManager::instance()->flush();
+  }
   imThread->deleteLater();                          //usuń zaraz obiekt
 }
 

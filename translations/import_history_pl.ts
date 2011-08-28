@@ -37,6 +37,10 @@ Na pewno chcesz przerwać?</translation>
         <source>Choose an archive directory</source>
         <translation>Wybierz katalog z archiwum</translation>
     </message>
+    <message>
+        <source>Hint: Search in </source>
+        <translation>Podpowiedź: Szukaj w </translation>
+    </message>
 </context>
 <context>
     <name>ImportFromGG</name>

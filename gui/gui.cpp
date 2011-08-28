@@ -16,6 +16,13 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <QtGlobal>
+
+#ifdef Q_WS_WIN
+#include <windows.h>
+#include <shlobj.h>
+#endif
+
 #include <QBoxLayout>
 #include <QCloseEvent>
 #include <QComboBox>
@@ -31,6 +38,8 @@
 #include <QTimer>
 
 #include "accounts/account-manager.h"
+#include "activate.h"
+#include "configuration/configuration-manager.h"
 #include "debug.h"
 #include "misc/misc.h"
 #include "icons/icons-manager.h"
@@ -43,6 +52,21 @@
  * @{
  */
 
+Import *Import::Instance = 0;
+
+void Import::show()
+{
+  if (!Instance)
+    Instance = new Import();
+
+  _activateWindow(Instance);
+}
+
+void Import::destroyInstance()
+{
+  delete Instance;
+  Instance = 0;
+}
 
 Import::Import(QDialog *p):
     QWidget(p, Qt::Dialog), ui(new Ui_ImportHistory), thread(false)
@@ -50,6 +74,22 @@ Import::Import(QDialog *p):
   ui->setupUi(this);
   setWindowTitle(tr("Import history"));
   setAttribute(Qt::WA_DeleteOnClose);
+
+#ifdef Q_WS_WIN
+  QString hintString;
+  WCHAR homepath[MAX_PATH + 1];
+  if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_APPDATA, NULL, 0, homepath)))
+    hintString = QString::fromUtf16((const ushort *)homepath);
+  else
+    hintString = QDir::homePath();
+
+  hintString = "<font size='-1'><i>" + tr("Hint: Search in ") + hintString + "</font></i>";
+  ui->hint_new->setText(hintString);
+  ui->hint_old->setText(hintString);
+#else
+  ui->hint_new->hide();
+  ui->hint_old->hide();
+#endif
 
   ui->cancelButton->setDisabled(true);
 
@@ -72,6 +112,7 @@ Import::Import(QDialog *p):
 Import::~Import()
 {
   delete ui;
+  Instance = 0;
 }
 
 
@@ -145,7 +186,10 @@ void Import::threadFinished()
   thread=false;                                     //wątek nieaktywny
   ui->progressBar->reset();
   if (!imThread->canceled())
+  {
     QMessageBox::information(this,tr("Information"), tr("History imported sucsesfully."));
+    ConfigurationManager::instance()->flush();
+  }
   imThread->deleteLater();                          //usuń zaraz obiekt
 }
 

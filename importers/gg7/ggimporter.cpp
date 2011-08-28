@@ -151,7 +151,7 @@ void ImportFromGG::run()
           message.setContent(decode(msg, user));
           message.setSendDate(QDateTime::fromTime_t (gg_message.send_time));
           message.setReceiveDate(QDateTime::fromTime_t (gg_rcv_msg.rcv_time));
-          message.setType(Message::TypeReceived);
+          message.setType(MessageTypeReceived);
 
           History::instance()->currentStorage()->appendMessage(message);
           //1.  argument (osoba/by z którymi gadamy) 2. ten kto pisał czyli w tym wypadku dwa razy to samo
@@ -193,7 +193,7 @@ void ImportFromGG::run()
 
           message.setSendDate(QDateTime::fromTime_t (gg_message.send_time));
           message.setReceiveDate(QDateTime::fromTime_t (gg_rcv_msg.rcv_time));
-          message.setType(outgoing ? Message::TypeSent : Message::TypeReceived);
+          message.setType(outgoing ? MessageTypeSent : MessageTypeReceived);
 
           History::instance()->currentStorage()->appendMessage(message);
         }
@@ -263,7 +263,7 @@ QString ImportFromGG::decode(const QByteArray& msg, const Contact user)      //u
     for (unsigned int i=0;i<sizeof(frm);i++)
       nformat.append(format[position++]);
 
-    if (frm.font & 0x8)   //kolor
+    if (frm.font & 0x08)   //kolor
       for (unsigned int i=0;i<sizeof(struct gg_msg_richtext_color);i++)
         nformat.append(format[position++]);
 

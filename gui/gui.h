@@ -40,6 +40,8 @@ class Import: public QWidget
 {
     Q_OBJECT
     
+    static Import *Instance;
+    
     Ui_ImportHistory *ui;
     
     Importer       *imThread;
@@ -50,6 +52,9 @@ class Import: public QWidget
     
     void closeEvent(QCloseEvent *event);
 
+    Import(QDialog *parent=0);
+    ~Import();
+
   private slots:
     void ggProceed();
     void ggBrowse();
@@ -57,8 +62,9 @@ class Import: public QWidget
     void updateProgress();
 
   public:
-    Import(QDialog *parent=0);
-    ~Import();
+    static void show();
+    static void destroyInstance();
+
 };
 
 /** @} */

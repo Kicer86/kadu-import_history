@@ -48,7 +48,7 @@ class Import: public QWidget
     bool           thread;
 
     QTimer *timer;
-    QList<Account> accountList;
+    QVector<Account> accountList;
     
     void closeEvent(QCloseEvent *event);
 

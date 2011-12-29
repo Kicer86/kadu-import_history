@@ -25,7 +25,7 @@
 #include <libgadu.h>
 
 #include "accounts/account-manager.h"
-#include "chat/message/message.h"
+#include "message/message.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact-manager.h"

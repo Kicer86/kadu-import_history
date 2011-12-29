@@ -22,7 +22,7 @@
 #include <QMessageBox>
 #include <QTextCodec>
 
-#include "chat/message/message.h"
+#include "message/message.h"
 #include "contacts/contact-manager.h"
 #include "plugins/history/history.h"
 #include "misc/path-conversion.h"

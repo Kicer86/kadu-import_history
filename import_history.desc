@@ -2,7 +2,7 @@
 Description=History import module
 Description[pl]=Modul importu historii
 Dependencies=gadu_protocol history sql_history
-Author=Micha≥ aka Kicer Walenciak
+Author=Micha≈Ç aka Kicer Walenciak
 LoadByDefault=true
 Version=core
 Base=false

@@ -20,6 +20,8 @@
 #include <QMessageBox>
 
 #include "chat/chat-manager.h"
+#include "chat/type/chat-type-contact.h"
+#include "chat/type/chat-type-contact-set.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "importer.h"
@@ -62,10 +64,15 @@ int Importer::getPosition() const
 
 Chat Importer::chatFromUinsList(const UinsList& uinsList) const
 {
+  // TODO: can we safely add contacts and chats to managers from this thread?
   ContactSet contacts;
   foreach(UinType uin, uinsList)
-  {
     contacts.insert(ContactManager::instance()->byId(account, QString::number(uin), ActionCreateAndAdd));
-  }
-  return ChatManager::instance()->findChat(contacts);
+
+  if (contacts.isEmpty())
+    return Chat::null;
+
+  return 1 == contacts.size()
+    ? ChatTypeContact::findChat(*contacts.constBegin(), ActionCreateAndAdd)
+    : ChatTypeContactSet::findChat(contacts, ActionCreateAndAdd);
 }

@@ -25,7 +25,6 @@
 #include "message/message.h"
 #include "contacts/contact-manager.h"
 #include "plugins/history/history.h"
-#include "misc/path-conversion.h"
 #include "protocols/services/chat-image-service.h"
 
 #include "gg8importer.h"

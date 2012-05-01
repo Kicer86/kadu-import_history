@@ -29,7 +29,6 @@
 #include "configuration/configuration-file.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact-manager.h"
-#include "misc/misc.h"
 #include "plugins/gadu_protocol/helpers/gadu-formatter.h"
 #include "plugins/history/history.h"
 
@@ -289,7 +288,7 @@ QString ImportFromGG::decode(const QByteArray& msg, const Contact user)      //u
       position++;    //null
       position+=8;   //8 bajtów na crc i rozmiar (juz jest w nagłówku (img) )
 
-      QFile img_file(profilePath(QString("images/%1-%2-%3-%4").arg(user.id().toInt()).arg(img.size).arg(img.crc32).arg(file_name.data())));
+      QFile img_file(ChatImageService::imagesPath() + QString("%1-%2-%3-%4").arg(user.id().toInt()).arg(img.size).arg(img.crc32).arg(file_name.data()));
       img_file.open(QIODevice::WriteOnly);
       img_file.write(reinterpret_cast<char*>(array+position),img.size);
       img_file.close();

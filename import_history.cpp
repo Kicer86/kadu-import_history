@@ -16,7 +16,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "core/core.h"
-#include "debug.h"
+#include "kadu-core/debug.h"
 #include "gui/actions/action-description.h"
 #include "gui/windows/kadu-window.h"
 #include "misc/misc.h"
